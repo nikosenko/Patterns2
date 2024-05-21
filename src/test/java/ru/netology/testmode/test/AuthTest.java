@@ -1,9 +1,13 @@
 package ru.netology.testmode.test;
 
+import com.codeborne.selenide.Condition;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import static com.codeborne.selenide.Condition.exactText;
+import static com.codeborne.selenide.Condition.visible;
+import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.open;
 import static ru.netology.testmode.data.DataGenerator.Registration.getRegisteredUser;
 import static ru.netology.testmode.data.DataGenerator.Registration.getUser;
@@ -24,6 +28,11 @@ class AuthTest {
         // TODO: добавить логику теста, в рамках которого будет выполнена попытка входа в личный кабинет с учётными
         //  данными зарегистрированного активного пользователя, для заполнения полей формы используйте
         //  пользователя registeredUser
+        $("[data-test-id=login] .input__control").setValue(registeredUser.getLogin());
+        $("[data-test-id=password] .input__control").setValue(registeredUser.getPassword());
+        $("[data-test-id=action-login]").click();
+        $("#root").shouldBe(visible)
+                .shouldHave(Condition.exactText("Личный кабинет"));
     }
 
     @Test
